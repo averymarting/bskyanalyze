@@ -38,4 +38,4 @@ jobs:
           SEARCH_TERM: ${{ inputs.search_term }}
           TOP_N: ${{ inputs.top_n }}
           MAX_POSTS: ${{ inputs.max_posts }}
-        run: python scripts/bluesky_top_posts.py
+        run: python bluesky_top_posts.py
