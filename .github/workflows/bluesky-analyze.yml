@@ -1,0 +1,41 @@
+name: Bluesky Account Performance Analyzer
+
+on:
+  workflow_dispatch:
+    inputs:
+      search_term:
+        description: "Only analyze posts containing this text (leave blank to scan all posts)"
+        required: false
+        default: ""
+      top_n:
+        description: "How many top posts to show"
+        required: false
+        default: "10"
+      max_posts:
+        description: "Max number of recent posts to scan"
+        required: false
+        default: "500"
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Bluesky analyzer
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+          SEARCH_TERM: ${{ inputs.search_term }}
+          TOP_N: ${{ inputs.top_n }}
+          MAX_POSTS: ${{ inputs.max_posts }}
+        run: python scripts/bluesky_top_posts.py
